@@ -1236,3 +1236,11 @@ h1 span:after {
     animation: none !important;
   }
 }
+/* Keep editable fields at 16px to prevent automatic zoom on iPhone. */
+@media (max-width: 700px) {
+  .search input,
+  .partner-form input,
+  .partner-form select {
+    font-size: 16px;
+  }
+}

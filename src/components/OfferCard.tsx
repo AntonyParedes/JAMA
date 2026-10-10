@@ -13,7 +13,10 @@ export function OfferCard({
     <article className="offer-card">
       <button
         className="offer-photo"
-        onClick={() => onSelect(offer)}
+        onClick={(event) => {
+          event.currentTarget.focus();
+          onSelect(offer);
+        }}
         aria-label={`Ver detalles de ${offer.name}`}
       >
         <img src={offer.image} alt={offer.imageAlt} loading="lazy" />
@@ -36,7 +39,10 @@ export function OfferCard({
           </div>
           <button
             className="round-button"
-            onClick={() => onSelect(offer)}
+            onClick={(event) => {
+              event.currentTarget.focus();
+              onSelect(offer);
+            }}
             aria-label={`Explorar ${offer.name}`}
           >
             <ArrowUpRight size={22} />
