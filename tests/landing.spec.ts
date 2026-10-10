@@ -9,16 +9,19 @@ test("catalog, navigation, dialog, partner form and responsive layout", async ({
     "Comida rica de hoy, más barata y cerca de ti.",
   );
   await page.evaluate(() => document.fonts.ready);
-  const images = await page
-    .locator("img")
-    .evaluateAll((elements) =>
-      elements.every(
-        (element) =>
-          (element as HTMLImageElement).complete &&
-          (element as HTMLImageElement).naturalWidth > 0,
-      ),
-    );
-  expect(images).toBe(true);
+  await expect(page.locator(".offer-card")).toHaveCount(3);
+  // WebKit defers offscreen images; verify each asset after it enters the viewport.
+  for (const image of await page.locator("img").all()) {
+    await image.scrollIntoViewIfNeeded();
+    await expect
+      .poll(() =>
+        image.evaluate(
+          (element: HTMLImageElement) =>
+            element.complete && element.naturalWidth > 0,
+        ),
+      )
+      .toBe(true);
+  }
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
